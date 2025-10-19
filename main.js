@@ -10,13 +10,19 @@ async function fetchWeatherData() {
         return
     }
 
-    const url = `https://api.weatherstack.com/current?access_key={YOUR_API_KEY}&query=${city}`;
+    const url = `https://api.weatherstack.com/current?access_key=0bd619a588249dd9cb5622a1781426b6&query=${city}`;
     const options = {
 	method: 'GET'
     };
 
     let parentDiv = document.getElementById('city-details');
     parentDiv.innerHTML='';
+
+    tempDiv = document.getElementById('temp-div');
+    if(tempDiv){
+        tempDiv.remove();
+    }
+
     try {
 	    const response = await fetch(url, options);
         if (!response.ok) {
@@ -61,6 +67,45 @@ async function fetchWeatherData() {
         let cityUvIndex = document.createElement('p');
         cityUvIndex.textContent=`UV Index: ${result.current.uv_index}`;
         parentDiv.appendChild(cityUvIndex);
+
+        let tempDiv = document.createElement('div');
+        tempDiv.id='temp-div';
+        document.body.appendChild(tempDiv);
+
+        let tempLabel = document.createElement('h1');
+        tempLabel.textContent='Temperature Gauge';
+        tempDiv.appendChild(tempLabel);
+
+        let tempBar = document.createElement('progress');
+        tempBar.value = result.current.temperature 
+        tempBar.max = 50;
+        tempBar.id = 'temp-bar';
+        tempDiv.appendChild(tempBar);
+
+        
+
+        if(result.current.temperature < 10){
+            tempBar.style.setProperty("--progress-color", "#1E90FF");
+        }
+
+        else if(result.current.temperature < 20 && result.current.temperature >= 10){
+            tempBar.style.setProperty("--progress-color","#00BFFF");
+        }
+
+        else if(result.current.temperature < 30 && result.current.temperature >= 20){
+            tempBar.style.setProperty("--progress-color","#7CFC00");
+        }
+
+        else if(result.current.temperature < 40 && result.current.temperature >= 30){
+            tempBar.style.setProperty("--progress-color","#FFD700");
+        }
+        else{
+           tempBar.style.setProperty("--progress-color","#FF4500");
+        }
+        
+
+            
+
 
     } catch (error) {
 	    console.error(error);
