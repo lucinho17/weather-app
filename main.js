@@ -10,7 +10,7 @@ async function fetchWeatherData() {
         return
     }
 
-    const url = `https://api.weatherstack.com/current?access_key={YOUR_API_KEY}&query=${city}`;
+    const url = `https://api.weatherstack.com/current?access_key=${API_KEY}&query=${city}`;
     const options = {
 	method: 'GET'
     };
